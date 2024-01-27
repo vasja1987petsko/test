@@ -1,25 +1,34 @@
 import React from 'react';
-import logo from './logo.svg';
+import { useSelector } from 'react-redux';
 import './App.css';
 
+import { INote } from './store/notes/notesSlice';
+import Note from './components/Note';
+import CreateNote from './components/CreateNote'
+import type { RootState } from './store';
+
+
 function App() {
+  const notes = useSelector((state: RootState) => state.notes.list);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <div className="App">
+        <header className="App-header">
+        </header>
+        <div className="Wrapper">
+          <CreateNote/>
+          {
+            notes.map((note: INote) => {
+              return (
+                  <Note
+                      key={new Date(note.timestamp).getTime()}
+                      note={note}
+                  />
+              )
+            })
+          }
+        </div>
+      </div>
   );
 }
 
